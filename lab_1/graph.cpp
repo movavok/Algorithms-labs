@@ -23,10 +23,11 @@ void Graph::kruskalMST() {
     sort(edges.begin(), edges.end(), Graph::compareEdges);
 
     vector<int> parent(vertexAmount + 1);
-    for (int index = 0; index <= vertexAmount; index++)
+    for (int index = 1; index <= vertexAmount; index++)
         parent[index] = index;
 
     int totalWeight = 0;
+    int edgeCount = 0;
     cout << "Мінімальне каркасне дерево:\n";
 
     for (Edge edge : edges) {
@@ -34,6 +35,9 @@ void Graph::kruskalMST() {
             unite(edge.startVertex, edge.endVertex, parent);
             totalWeight += edge.weight;
             cout << edge.startVertex << " <-(" << edge.weight << ")-> " << edge.endVertex << endl;
+
+            edgeCount++;
+            if (edgeCount == vertexAmount - 1) break;
         }
     }
 
