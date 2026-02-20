@@ -1,6 +1,8 @@
 #ifndef NEURONNET_H
 #define NEURONNET_H
 
+#include <ctime>
+
 #include "perceptron.h"
 
 class NeuronNet {
@@ -9,28 +11,24 @@ public:
 
     void modelXOR();
 
-    // double sigmoid(double x) {
-    //     return 1.0 / (1.0 + exp(-x));
-    // }
+    void trainAndTestTS(vector<double>& series, int epochs = 50000);
 
-    // // прогнозування часових рядів
-    // double predictTimeSeries(const vector<double>& input) {
-    //     double sum = 0;
-    //     for(size_t i=0;i<w.size();i++)
-    //         sum += input[i]*w[i];
-    //     return sigmoid(sum)*10; // масштабування
-    // }
 
 private:
     vector<double> m_weights;
     double m_learningRate;
-    double m_threshold;
 
     // XOR members/helper
     Perceptron pNAND;
     Perceptron pOR;
     Perceptron pAND;
     void initXOR();
+
+    // Time series helper
+    double sigmoid(double x) { return 1.0 / (1.0 + exp(-x)) * 10; }
+    double predictTimeSeries(const vector<double>& input);
+    void trainTimeSeries(const vector<double>& series, int epochs, size_t trainCount = 13);
+    void testTimeSeries(const vector<double>& series, size_t trainCount = 13);
 };
 
 #endif // NEURONNET_H

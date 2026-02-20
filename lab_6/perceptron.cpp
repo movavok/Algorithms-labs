@@ -1,7 +1,7 @@
 #include "perceptron.h"
 
-Perceptron::Perceptron(int inputsAmount)
-    : m_threshold(0.5)
+Perceptron::Perceptron(int inputsAmount, double learnRate)
+    : m_learningRate(learnRate), m_threshold(0.5)
 {
     m_weights.resize(inputsAmount, 1.0);
 }
@@ -13,15 +13,15 @@ int Perceptron::predict(const vector<int>& inputs) {
     return sum >= m_threshold ? 1 : 0;
 }
 
-// void Perceptron::train(const vector<vector<int>>& inputs, const vector<int>& targets, int epochs) {
-//     for (int epoch = 0; epoch < epochs; epoch++)
-//         for (size_t inputIdx = 0; inputIdx < inputs.size(); inputIdx++) {
-//             int resultPred = predict(inputs[inputIdx]);
-//             int error = targets[inputIdx] - resultPred;
-//             for (size_t weightIdx = 0; weightIdx < m_weights.size(); weightIdx++)
-//                 m_weights[weightIdx] += m_learningRate * error * inputs[inputIdx][weightIdx];
-//         }
-// }
+void Perceptron::train(const vector<vector<int>>& inputs, const vector<int>& targets, int epochs) {
+    for (int epoch = 0; epoch < epochs; epoch++)
+        for (size_t inputIdx = 0; inputIdx < inputs.size(); inputIdx++) {
+            int resultPred = predict(inputs[inputIdx]);
+            int error = targets[inputIdx] - resultPred;
+            for (size_t weightIdx = 0; weightIdx < m_weights.size(); weightIdx++)
+                m_weights[weightIdx] += m_learningRate * error * inputs[inputIdx][weightIdx];
+        }
+}
 
 void Perceptron::test(const vector<vector<int>>& inputs, const vector<int>& targets) {
     for (size_t index = 0; index < inputs.size(); index++) {
